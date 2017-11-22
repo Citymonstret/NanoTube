@@ -26,7 +26,7 @@ public abstract class ConditionalTransformer<T> extends ChainLink<T, T> {
     /**
      * Overrides {@link ChainLink#act(Object)}
      */
-    public final void act(final T item) {
+    public final ChainLink<?, ?> act(final T item) throws Throwable {
         final T handleStatus;
         if (condition.test(item)) {
             handleStatus = this.handle(item);
@@ -36,8 +36,9 @@ public abstract class ConditionalTransformer<T> extends ChainLink<T, T> {
         if (handleStatus != null) {
             final Optional<ChainLink<T, ?>> nextItemOptional = getNextItem();
             if (nextItemOptional.isPresent()) {
-                nextItemOptional.get().act(handleStatus);
+                return nextItemOptional.get().act(handleStatus);
             }
         }
+        return this;
     }
 }

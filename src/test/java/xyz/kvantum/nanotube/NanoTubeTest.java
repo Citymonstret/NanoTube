@@ -4,10 +4,16 @@ import junit.framework.TestCase;
 
 public class NanoTubeTest extends TestCase {
 
+    /**
+     * Used to test when jUnit decides to not work
+     */
+    public static void main(final String[] test) {
+        new NanoTubeTest().test();
+    }
+
     public void test() {
-        final NanoTube<String> nanoTube = NanoTube.construct(new ToLowerCase());
-        nanoTube.getFirstItem().next(new Print()).next(new Substring()).next(new Print());
-        nanoTube.initiate("HELLO WORLD");
+        NanoTube.construct(new ToLowerCase()).setLast(new Print()).setLast(new Substring())
+                .setLast(new Print()).initiate("HELLO WORLD");
     }
 
     public static class ToLowerCase extends Transformer<String> {

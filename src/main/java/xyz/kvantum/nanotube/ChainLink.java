@@ -35,16 +35,17 @@ public abstract class ChainLink<Input, Output> {
         return Optional.ofNullable(this.nextItem);
     }
 
-    protected void act(final Input item) {
+    protected ChainLink<?, ?> act(final Input item) throws Throwable {
         final Output handleStatus = this.handle(item);
         if (handleStatus != null) {
             final Optional<ChainLink<Output, ?>> nextItemOptional = getNextItem();
             if (nextItemOptional.isPresent()) {
-                nextItemOptional.get().act(handleStatus);
+                return nextItemOptional.get().act(handleStatus);
             }
         }
+        return this;
     }
 
-    protected abstract Output handle(final Input item);
+    protected abstract Output handle(final Input item) throws Throwable;
 
 }
