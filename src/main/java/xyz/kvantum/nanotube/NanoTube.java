@@ -68,7 +68,9 @@ public final class NanoTube<Input, Output> {
      * @return copy of this
      */
     public NanoTube<Input, Output> copy() {
-        return new NanoTube<>(this.getFirstItem());
+        final NanoTube<Input, Output> nanoTube = new NanoTube<>(this.getFirstItem());
+        nanoTube.setExceptionHandler( this.exceptionHandler );
+        return nanoTube;
     }
 
     /**

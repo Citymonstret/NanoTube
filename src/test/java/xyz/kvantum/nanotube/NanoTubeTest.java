@@ -4,6 +4,8 @@ import junit.framework.TestCase;
 
 public class NanoTubeTest extends TestCase {
 
+    private static final boolean throwPrintException = true;
+
     /**
      * Used to test when jUnit decides to not work
      */
@@ -12,7 +14,10 @@ public class NanoTubeTest extends TestCase {
     }
 
     public void test() {
-        NanoTube.construct(new ToLowerCase()).setLast(new Print()).setLast(new Substring())
+        NanoTube.construct(new ToLowerCase()).setExceptionHandler( throwable ->
+                System.out.printf( "Exception :( -> %s\n", throwable.getMessage() ) )
+                .setLast(new Print())
+                .setLast(new Substring())
                 .setLast(new Print()).initiate("HELLO WORLD");
     }
 
@@ -26,6 +31,9 @@ public class NanoTubeTest extends TestCase {
     public static class Print extends Receiver<String> {
         @Override
         public void receive(String item) {
+            if ( throwPrintException ) {
+                throw new RuntimeException("Random error...");
+            }
             System.out.println(item);
         }
     }
